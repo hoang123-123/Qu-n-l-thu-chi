@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 
 interface AIChatboxProps {
@@ -12,94 +13,108 @@ const AIChatbox: React.FC<AIChatboxProps> = ({ handleGetAiAdvice, isAiLoading, a
 
     return (
         <>
-            {/* Floating Action Button */}
+            {/* Floating Action Button - 3D Robot Style */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="ai-fab fixed bottom-8 right-8 w-16 h-16 bg-secondary rounded-full shadow-lg flex items-center justify-center text-3xl z-40 transition-all duration-300 transform hover:scale-110 hover:shadow-xl focus:outline-none"
+                className="fixed bottom-6 right-6 z-50 focus:outline-none group"
                 aria-label="Mở AI Chatbox"
             >
-                {/* Bubbles container */}
-                <div className="bubbles">
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                    <span />
-                </div>
-                
-                {/* New SVG Icon */}
-                <svg viewBox="0 0 100 100" width="44" height="44" className="isolate clip-circle">
+                <svg 
+                    className="w-32 h-32 robot-3d" 
+                    viewBox="0 0 200 200" 
+                    xmlns="http://www.w3.org/2000/svg"
+                >
                     <defs>
-                        <linearGradient id="electricGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stopColor="#00ffff" />
-                            <stop offset="100%" stopColor="#0066ff" />
-                        </linearGradient>
+                        <radialGradient id="robotG" cx="30%" cy="30%" r="80%">
+                            <stop offset="0%" stopColor="#c6f2ff"/>
+                            <stop offset="40%" stopColor="#7dc8ff"/>
+                            <stop offset="100%" stopColor="#347dff"/>
+                        </radialGradient>
                     </defs>
-                    <circle cx="50" cy="50" r="45" className="face-fill" />
-                    <path className="glow"
-                    d="M50 5
-                        A45 45 0 1 1 49.9 5
-                        M30 35 Q50 20 70 35
-                        M30 65 Q50 80 70 65" />
-                    <g className="face-details">
-                        <circle cx="35" cy="45" r="4" />
-                        <circle cx="65" cy="45" r="4" />
-                        <line x1="40" y1="63" x2="60" y2="63" />
-                    </g>
+
+                    {/* Outer glow highlight */}
+                    <circle cx="100" cy="100" r="78" fill="url(#robotG)" opacity="0.9"/>
+
+                    {/* Robot Head */}
+                    <rect x="45" y="50" width="110" height="85" rx="32" fill="url(#robotG)" />
+
+                    {/* Robot Eyes */}
+                    <rect x="68" y="65" width="65" height="40" rx="18" fill="#fff" opacity="0.8"/>
+                    <circle cx="97" cy="83" r="8" fill="#2f6cff"/>
+                    <circle cx="125" cy="83" r="8" fill="#2f6cff"/>
+
+                    {/* Robot Mouth */}
+                    <rect x="82" y="112" width="40" height="12" rx="6" fill="white" opacity="0.55"/>
+
+                    {/* Gloss highlight */}
+                    <ellipse cx="82" cy="60" rx="36" ry="16" fill="white" opacity="0.22"/>
                 </svg>
             </button>
 
             {/* Chatbox Window */}
             {isOpen && (
                 <div 
-                    className="fixed bottom-28 right-8 w-[calc(100%-4rem)] max-w-md bg-secondary/80 backdrop-blur-lg border border-accent/50 rounded-lg shadow-2xl z-40 animate-fade-in-up flex flex-col" 
-                    style={{ height: 'clamp(300px, 60vh, 600px)' }}>
-                    <header className="p-4 flex justify-between items-center cursor-pointer" onClick={() => setIsOpen(false)}>
-                        <h3 className="text-lg font-bold text-highlight flex items-center gap-2">
-                            <i className="fas fa-magic"></i>
-                            Trợ lý Tài chính AI
+                    className="fixed bottom-36 right-8 w-[calc(100%-4rem)] max-w-md bg-secondary/90 backdrop-blur-xl border border-blue-500/30 rounded-2xl shadow-2xl z-40 animate-fade-in-up flex flex-col overflow-hidden ring-1 ring-white/10" 
+                    style={{ height: 'clamp(350px, 65vh, 600px)' }}>
+                    
+                    <header className="p-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 flex justify-between items-center cursor-pointer border-b border-white/10" onClick={() => setIsOpen(false)}>
+                        <h3 className="text-lg font-bold text-white flex items-center gap-3">
+                            <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-[0_0_10px_#60a5fa]"></div>
+                            Trợ lý Robot AI
                         </h3>
-                        <button className="text-text-secondary hover:text-text-primary text-2xl" aria-label="Đóng">&times;</button>
+                        <button className="text-blue-200 hover:text-white text-2xl transition-colors" aria-label="Đóng">&times;</button>
                     </header>
-                    <div className="px-4 pb-4 flex-grow overflow-y-auto min-h-0">
+
+                    <div className="px-4 py-4 flex-grow overflow-y-auto min-h-0 scrollbar-thin scrollbar-thumb-blue-500/20 scrollbar-track-transparent">
                          {isAiLoading ? (
-                            <div className="flex flex-col items-center justify-center h-full text-center text-text-secondary">
-                                <i className="fas fa-spinner fa-spin text-highlight text-4xl"></i>
-                                <p className="mt-4">AI đang phân tích dữ liệu của bạn...</p>
-                                <p className="text-xs mt-1">Việc này có thể mất một vài giây.</p>
+                            <div className="flex flex-col items-center justify-center h-full text-center text-blue-200/80">
+                                <div className="relative w-16 h-16 mb-4">
+                                    <div className="absolute inset-0 rounded-full border-t-2 border-blue-400 animate-spin"></div>
+                                    <div className="absolute inset-2 rounded-full border-t-2 border-purple-400 animate-spin [animation-direction:reverse]"></div>
+                                </div>
+                                <p className="animate-pulse">Đang suy nghĩ...</p>
                             </div>
                         ) : aiError ? (
-                             <div className="bg-red-900/50 border border-red-500 text-red-300 p-4 rounded-lg h-full flex flex-col justify-center">
-                                <p className="font-bold text-center">Đã có lỗi xảy ra!</p>
-                                <p className="text-sm text-center mt-2">{aiError}</p>
+                             <div className="bg-red-900/30 border border-red-500/50 text-red-200 p-4 rounded-xl h-full flex flex-col justify-center items-center text-center">
+                                <i className="fas fa-exclamation-circle text-3xl mb-2 text-red-400"></i>
+                                <p className="font-bold">Rất tiếc, có lỗi xảy ra!</p>
+                                <p className="text-sm mt-2 opacity-80">{aiError}</p>
                             </div>
                         ) : aiAdvice ? (
                              <div 
-                                className="prose prose-invert prose-sm max-w-none text-text-primary whitespace-pre-wrap p-3 bg-primary/70 rounded-md"
-                                dangerouslySetInnerHTML={{ __html: aiAdvice.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br />') }}
+                                className="prose prose-invert prose-sm max-w-none text-slate-200 whitespace-pre-wrap p-4 bg-white/5 rounded-xl border border-white/5 shadow-inner"
+                                dangerouslySetInnerHTML={{ __html: aiAdvice.replace(/\*\*(.*?)\*\*/g, '<strong class="text-blue-300">$1</strong>').replace(/\n/g, '<br />') }}
                             />
                         ) : (
-                            <div className="text-center text-text-secondary p-4 flex flex-col items-center justify-center h-full">
-                                <i className="fas fa-magic text-4xl mb-4 text-highlight"></i>
-                                <p>Nhận phân tích và lời khuyên tài chính được cá nhân hóa.</p>
+                            <div className="text-center text-blue-200/60 p-4 flex flex-col items-center justify-center h-full space-y-4">
+                                <div className="p-4 bg-blue-500/10 rounded-full">
+                                    <i className="fas fa-robot text-4xl text-blue-400"></i>
+                                </div>
+                                <p>Xin chào! Tôi là trợ lý tài chính ảo của bạn.</p>
+                                <p className="text-sm">Bấm nút bên dưới để tôi phân tích ví tiền của bạn nhé!</p>
                             </div>
                         )}
                     </div>
-                    <div className="p-4 border-t border-accent/50">
+                    <div className="p-4 bg-gradient-to-t from-secondary to-transparent">
                         <button
                             onClick={handleGetAiAdvice}
                             disabled={isAiLoading}
-                            className="w-full bg-highlight text-primary font-bold py-2.5 px-4 rounded-md hover:bg-teal-400 transition duration-300 disabled:bg-accent disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 px-4 rounded-xl hover:from-blue-500 hover:to-indigo-500 transition-all duration-300 shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 border border-white/10"
                         >
                             {isAiLoading ? (
                                 <>
-                                    <i className="fas fa-spinner fa-spin"></i>
-                                    <span>Đang phân tích...</span>
+                                    <span className="w-2 h-2 bg-white rounded-full animate-bounce"></span>
+                                    <span className="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:0.1s]"></span>
+                                    <span className="w-2 h-2 bg-white rounded-full animate-bounce [animation-delay:0.2s]"></span>
                                 </>
                             ): aiAdvice || aiError ? (
-                                 'Tạo lại phân tích'
+                                 <>
+                                    <i className="fas fa-redo-alt"></i> Phân tích lại
+                                 </>
                             ) : (
-                                'Cho tôi lời khuyên'
+                                <>
+                                    <i className="fas fa-magic"></i> Phân tích tài chính
+                                </>
                             )}
                         </button>
                     </div>

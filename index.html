@@ -65,88 +65,27 @@
         background: #718096;
     }
 
-    /* AI Icon Styles */
-    .ai-fab {
-      position: relative;
-    }
-    
-    .ai-fab .face-fill {
-      fill: transparent;
-      transition: fill 0.8s ease;
+    /* Robot AI 3D Animation */
+    @keyframes float-robot {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-12px); }
+      100% { transform: translateY(0); }
     }
 
-    .ai-fab .glow {
-      stroke: #A0AEC0; /* Solid gray color by default */
-      stroke-width: 2.5;
-      fill: none;
-      stroke-linecap: round;
-      opacity: 0.7;
-      transition: stroke 0.8s ease, opacity 0.8s ease;
+    @keyframes pulse-glow {
+      0%   { filter: drop-shadow(0 0 6px #4fa3ff); }
+      50%  { filter: drop-shadow(0 0 26px #7bc3ff); }
+      100% { filter: drop-shadow(0 0 6px #4fa3ff); }
     }
 
-    .ai-fab .face-details circle {
-      fill: #A0AEC0; /* Solid gray color */
-      transition: fill 0.8s ease;
+    .robot-3d {
+      animation: float-robot 3s ease-in-out infinite, pulse-glow 2.5s ease-in-out infinite;
+      cursor: pointer;
+      transition: transform 0.3s ease;
     }
 
-    .ai-fab .face-details line {
-      stroke: #A0AEC0; /* Solid gray color */
-      stroke-width: 2;
-      stroke-linecap: round;
-      transition: stroke 0.8s ease;
-    }
-    
-    /* Inverted Hover Effect */
-    .ai-fab:hover .face-fill {
-      fill: #00ffff; /* Background glows brightly */
-    }
-
-    .ai-fab:hover .glow {
-      stroke: #1A202C; /* Lines become dark */
-      opacity: 0.8;
-    }
-    
-    .ai-fab:hover .face-details circle {
-      fill: #1A202C; /* Eyes become dark */
-    }
-    .ai-fab:hover .face-details line {
-      stroke: #1A202C; /* Mouth becomes dark */
-    }
-
-
-    /* Bubble effect */
-    @keyframes bubble-rise {
-      0% {
-        transform: translateY(0);
-        opacity: 0; /* Start invisible */
-      }
-      20% {
-        opacity: 0.4; /* Gently fade in */
-      }
-      100% {
-        transform: translateY(-80px);
-        opacity: 0; /* Fade out at the end */
-      }
-    }
-
-    .bubbles span {
-      position: absolute;
-      bottom: 0;
-      border-radius: 50%;
-      background: rgba(0, 255, 255, 0.3);
-      opacity: 0;
-      pointer-events: none;
-      animation: bubble-rise 4s ease-in infinite; /* Animation is always running */
-    }
-
-    .bubbles span:nth-child(1) { left: 15%; animation-delay: 0s; width: 10px; height: 10px; animation-duration: 3s; }
-    .bubbles span:nth-child(2) { left: 45%; animation-delay: 0.5s; width: 15px; height: 15px; animation-duration: 4s; }
-    .bubbles span:nth-child(3) { left: 75%; animation-delay: 1s; width: 8px; height: 8px; animation-duration: 5s; }
-    .bubbles span:nth-child(4) { left: 60%; animation-delay: 1.5s; width: 12px; height: 12px; animation-duration: 3.5s; }
-    .bubbles span:nth-child(5) { left: 30%; animation-delay: 2s; width: 7px; height: 7px; animation-duration: 4.5s; }
-
-    .clip-circle {
-      clip-path: circle(50% at 50% 50%);
+    .robot-3d:hover {
+      transform: scale(1.1) translateY(-6px); /* Slight zoom on hover */
     }
 
   </style>
