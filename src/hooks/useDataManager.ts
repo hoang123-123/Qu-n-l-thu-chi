@@ -271,14 +271,17 @@ const useDataManager = ({ userSpreadsheetId, accessToken }: UseDataManagerProps)
         setAiAdvice('');
         setAiError(null);
         try {
-            // Fix: Use process.env.API_KEY as per guidelines
+            // Ensure process.env.API_KEY is defined (handled by index.tsx polyfill)
+            if (!process.env.API_KEY) {
+                throw new Error("Không tìm thấy API Key. Vui lòng kiểm tra cấu hình môi trường.");
+            }
+
             const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
             const transactionSummary = transactions
                 .slice(0, 20)
                 .map(tx => `- ${tx.description}: ${formatCurrency(tx.amount)} (${tx.type}) vào ngày ${new Date(tx.date).toLocaleDateString('vi-VN')}`)
                 .join('\n');
 
-            // Fix: Corrected typo `formatCamera` to `formatCurrency` and improved the prompt for better AI-generated financial advice.
             const prompt = `Bạn là một chuyên gia tư vấn tài chính cá nhân thân thiện và chuyên nghiệp. Dựa vào dữ liệu tài chính dưới đây, hãy đưa ra một bản phân tích và một vài lời khuyên hữu ích bằng tiếng Việt.
 
 **Dữ liệu tài chính:**
@@ -304,9 +307,23 @@ ${transactionSummary || "Không có giao dịch nào."}
             });
 
             setAiAdvice(response.text);
-        } catch (err) {
+        } catch (err: any) {
             console.error("Error getting AI advice:", err);
-            setAiError("Đã có lỗi xảy ra khi lấy tư vấn từ AI. Vui lòng thử lại.");
+            let errorMessage = "Đã có lỗi xảy ra khi lấy tư vấn từ AI.";
+            
+            // Provide more specific error details for debugging
+            if (err instanceof Error) {
+                errorMessage += ` Chi tiết: ${err.message}`;
+                if (err.message.includes('403')) {
+                    errorMessage += "\n\n(Lỗi 403: Có thể API Key bị chặn tên miền GitHub Pages. Vui lòng vào Google Cloud Console > Credentials > Chọn API Key > Thêm link GitHub Pages vào 'Website restrictions').";
+                } else if (err.message.includes('key')) {
+                    errorMessage += " (Vui lòng kiểm tra lại API Key).";
+                }
+            } else if (typeof err === 'string') {
+                errorMessage += ` ${err}`;
+            }
+            
+            setAiError(errorMessage);
         } finally {
             setIsAiLoading(false);
         }
