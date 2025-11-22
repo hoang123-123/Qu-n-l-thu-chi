@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 
 interface AIChatboxProps {
@@ -13,49 +12,49 @@ const AIChatbox: React.FC<AIChatboxProps> = ({ handleGetAiAdvice, isAiLoading, a
 
     return (
         <>
-            {/* Floating Action Button - 3D Robot Style */}
-            <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="fixed bottom-6 right-6 z-50 focus:outline-none group"
-                aria-label="Mở AI Chatbox"
+            {/* Floating Action Button - 3D Robot Pulse Style */}
+            <div 
+                className="fixed bottom-6 right-6 z-50 group"
             >
-                <svg 
-                    className="w-32 h-32 robot-3d" 
-                    viewBox="0 0 200 200" 
-                    xmlns="http://www.w3.org/2000/svg"
+                <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="focus:outline-none bg-transparent border-none p-0"
+                    aria-label="Mở AI Chatbox"
                 >
-                    <defs>
-                        <radialGradient id="robotG" cx="30%" cy="30%" r="80%">
-                            <stop offset="0%" stopColor="#c6f2ff"/>
-                            <stop offset="40%" stopColor="#7dc8ff"/>
-                            <stop offset="100%" stopColor="#347dff"/>
-                        </radialGradient>
-                    </defs>
+                    <svg className="robot-pulse" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <radialGradient id="robotG" cx="30%" cy="30%" r="80%">
+                                <stop offset="0%" stopColor="#c6f2ff"/>
+                                <stop offset="40%" stopColor="#7dc8ff"/>
+                                <stop offset="100%" stopColor="#347dff"/>
+                            </radialGradient>
+                        </defs>
 
-                    {/* Outer glow highlight */}
-                    <circle cx="100" cy="100" r="78" fill="url(#robotG)" opacity="0.9"/>
+                        {/* Outer glow highlight */}
+                        <circle cx="100" cy="100" r="78" fill="url(#robotG)" opacity="0.9"/>
 
-                    {/* Robot Head */}
-                    <rect x="45" y="50" width="110" height="85" rx="32" fill="url(#robotG)" />
+                        {/* Robot Head */}
+                        <rect x="45" y="50" width="110" height="85" rx="32" fill="url(#robotG)" />
 
-                    {/* Robot Eyes */}
-                    <rect x="68" y="65" width="65" height="40" rx="18" fill="#fff" opacity="0.8"/>
-                    <circle cx="97" cy="83" r="8" fill="#2f6cff"/>
-                    <circle cx="125" cy="83" r="8" fill="#2f6cff"/>
+                        {/* Robot Eyes */}
+                        <rect x="68" y="65" width="65" height="40" rx="18" fill="#fff" opacity="0.8"/>
+                        <circle cx="97" cy="83" r="8" fill="#2f6cff"/>
+                        <circle cx="125" cy="83" r="8" fill="#2f6cff"/>
 
-                    {/* Robot Mouth */}
-                    <rect x="82" y="112" width="40" height="12" rx="6" fill="white" opacity="0.55"/>
+                        {/* Robot Mouth */}
+                        <rect x="82" y="112" width="40" height="12" rx="6" fill="white" opacity="0.55"/>
 
-                    {/* Gloss highlight */}
-                    <ellipse cx="82" cy="60" rx="36" ry="16" fill="white" opacity="0.22"/>
-                </svg>
-            </button>
+                        {/* Gloss highlight */}
+                        <ellipse cx="82" cy="60" rx="36" ry="16" fill="white" opacity="0.22"/>
+                    </svg>
+                </button>
+            </div>
 
             {/* Chatbox Window */}
             {isOpen && (
                 <div 
-                    className="fixed bottom-36 right-8 w-[calc(100%-4rem)] max-w-md bg-secondary/90 backdrop-blur-xl border border-blue-500/30 rounded-2xl shadow-2xl z-40 animate-fade-in-up flex flex-col overflow-hidden ring-1 ring-white/10" 
-                    style={{ height: 'clamp(350px, 65vh, 600px)' }}>
+                    className="fixed bottom-44 right-8 w-[calc(100%-4rem)] max-w-md bg-secondary/90 backdrop-blur-xl border border-blue-500/30 rounded-2xl shadow-2xl z-40 animate-fade-in-up flex flex-col overflow-hidden ring-1 ring-white/10" 
+                    style={{ height: 'clamp(350px, 60vh, 550px)' }}>
                     
                     <header className="p-4 bg-gradient-to-r from-blue-600/20 to-purple-600/20 flex justify-between items-center cursor-pointer border-b border-white/10" onClick={() => setIsOpen(false)}>
                         <h3 className="text-lg font-bold text-white flex items-center gap-3">
@@ -78,7 +77,7 @@ const AIChatbox: React.FC<AIChatboxProps> = ({ handleGetAiAdvice, isAiLoading, a
                              <div className="bg-red-900/30 border border-red-500/50 text-red-200 p-4 rounded-xl h-full flex flex-col justify-center items-center text-center">
                                 <i className="fas fa-exclamation-circle text-3xl mb-2 text-red-400"></i>
                                 <p className="font-bold">Rất tiếc, có lỗi xảy ra!</p>
-                                <p className="text-sm mt-2 opacity-80">{aiError}</p>
+                                <p className="text-sm mt-2 opacity-80 whitespace-pre-wrap">{aiError}</p>
                             </div>
                         ) : aiAdvice ? (
                              <div 

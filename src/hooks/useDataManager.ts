@@ -1,4 +1,3 @@
-
 import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Transaction, TransactionType, TransactionSource, MonthlyData, DailyData } from '../types';
 import { GoogleGenAI } from "@google/genai";
@@ -271,12 +270,17 @@ const useDataManager = ({ userSpreadsheetId, accessToken }: UseDataManagerProps)
         setAiAdvice('');
         setAiError(null);
         try {
-            // Ensure process.env.API_KEY is defined (handled by index.tsx polyfill)
-            if (!process.env.API_KEY) {
+            // Try to get key from process.env, or window fallback if bundler stripped it
+            let apiKey = process.env.API_KEY;
+            if (!apiKey && typeof window !== 'undefined' && (window as any).process?.env?.API_KEY) {
+                apiKey = (window as any).process.env.API_KEY;
+            }
+
+            if (!apiKey) {
                 throw new Error("Không tìm thấy API Key. Vui lòng kiểm tra cấu hình môi trường.");
             }
 
-            const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+            const ai = new GoogleGenAI({ apiKey });
             const transactionSummary = transactions
                 .slice(0, 20)
                 .map(tx => `- ${tx.description}: ${formatCurrency(tx.amount)} (${tx.type}) vào ngày ${new Date(tx.date).toLocaleDateString('vi-VN')}`)
@@ -311,13 +315,14 @@ ${transactionSummary || "Không có giao dịch nào."}
             console.error("Error getting AI advice:", err);
             let errorMessage = "Đã có lỗi xảy ra khi lấy tư vấn từ AI.";
             
-            // Provide more specific error details for debugging
             if (err instanceof Error) {
-                errorMessage += ` Chi tiết: ${err.message}`;
-                if (err.message.includes('403')) {
-                    errorMessage += "\n\n(Lỗi 403: Có thể API Key bị chặn tên miền GitHub Pages. Vui lòng vào Google Cloud Console > Credentials > Chọn API Key > Thêm link GitHub Pages vào 'Website restrictions').";
-                } else if (err.message.includes('key')) {
-                    errorMessage += " (Vui lòng kiểm tra lại API Key).";
+                errorMessage += `\nChi tiết: ${err.message}`;
+                if (err.message.includes('403') || err.message.includes('Forbidden')) {
+                    errorMessage += "\n\n(Lỗi 403: API Key bị chặn. Hãy vào Google Cloud Console > Credentials > API Key của bạn > mục 'Website restrictions' và thêm URL của trang GitHub Pages này vào).";
+                } else if (err.message.includes('404') || err.message.includes('Not Found')) {
+                     errorMessage += "\n\n(Lỗi 404: Có thể Model AI không khả dụng hoặc URL sai. Vui lòng kiểm tra lại cấu hình Model).";
+                } else if (err.message.includes('Failed to fetch')) {
+                    errorMessage += "\n\n(Lỗi kết nối: Google chặn yêu cầu từ tên miền này. Hãy kiểm tra cài đặt 'Website restrictions' trong Google Cloud Console).";
                 }
             } else if (typeof err === 'string') {
                 errorMessage += ` ${err}`;

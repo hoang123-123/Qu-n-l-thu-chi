@@ -65,27 +65,27 @@
         background: #718096;
     }
 
-    /* Robot AI 3D Animation */
-    @keyframes float-robot {
+    /* Robot AI 3D Pulse Animation */
+    .robot-pulse {
+      width: 130px;
+      height: 130px;
+      animation: float 3s ease-in-out infinite, pulse 2.5s ease-in-out infinite;
+      cursor: pointer;
+      /* Ensure it sits on top of other elements but allows clicks */
+      pointer-events: auto; 
+      display: block;
+    }
+
+    @keyframes float {
       0%   { transform: translateY(0); }
       50%  { transform: translateY(-12px); }
       100% { transform: translateY(0); }
     }
 
-    @keyframes pulse-glow {
+    @keyframes pulse {
       0%   { filter: drop-shadow(0 0 6px #4fa3ff); }
       50%  { filter: drop-shadow(0 0 26px #7bc3ff); }
       100% { filter: drop-shadow(0 0 6px #4fa3ff); }
-    }
-
-    .robot-3d {
-      animation: float-robot 3s ease-in-out infinite, pulse-glow 2.5s ease-in-out infinite;
-      cursor: pointer;
-      transition: transform 0.3s ease;
-    }
-
-    .robot-3d:hover {
-      transform: scale(1.1) translateY(-6px); /* Slight zoom on hover */
     }
 
   </style>

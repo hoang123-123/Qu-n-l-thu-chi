@@ -6,24 +6,25 @@ import App from './src/App';
 // The Google GenAI SDK requires process.env.API_KEY to be defined.
 const FALLBACK_API_KEY = 'AIzaSyAHfqrq08IV9DI1whbHoX0HF3jABmRggIk';
 
-// Ensure process object exists in the global scope immediately
-if (typeof window !== 'undefined') {
-  if (!(window as any).process) {
-    (window as any).process = {};
-  }
-  if (!(window as any).process.env) {
-    (window as any).process.env = {};
-  }
-  // Force assignment to ensure it persists
-  (window as any).process.env.API_KEY = FALLBACK_API_KEY;
-}
-
-// Also patch global 'process' variable reference if possible for strict bundlers
+// Robust polyfill for process.env
 try {
+  // 1. Ensure window.process exists
+  if (typeof window !== 'undefined') {
+    if (!(window as any).process) {
+      (window as any).process = {};
+    }
+    if (!(window as any).process.env) {
+      (window as any).process.env = {};
+    }
+    (window as any).process.env.API_KEY = FALLBACK_API_KEY;
+  }
+
+  // 2. Try to patch global process if it's undefined (safeguard for bundlers)
   if (typeof process === 'undefined') {
     // @ts-ignore
     window.process = { env: { API_KEY: FALLBACK_API_KEY } };
   } else {
+    // If process exists but env is missing or empty (common in vite prod build)
     if (!process.env) {
       (process as any).env = {};
     }
